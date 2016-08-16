@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["request","Contains requests made by Gherkin interpreter (or Wire Protocol)."],["response","Contains responses for Gherkin interpreter (or Wire Protocol)."]]});

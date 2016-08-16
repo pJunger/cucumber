@@ -1,0 +1,1 @@
+initSidebarItems({"fn":[["ruby_command","Build a command to execute the Ruby Cucumber Server"],["start","Starts a Cucumber server and the Ruby client"],["start_with_addr","Start a Cucumber server, with an ip and port, see the [`start() method`][start]. [start]: fn.start.html"]]});

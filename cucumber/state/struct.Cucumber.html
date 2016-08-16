@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="generator" content="rustdoc">
+    <meta name="description" content="API documentation for the Rust `Cucumber` struct in crate `cucumber`.">
+    <meta name="keywords" content="rust, rustlang, rust-lang, Cucumber">
+
+    <title>cucumber::state::Cucumber - Rust</title>
+
+    <link rel="stylesheet" type="text/css" href="../../rustdoc.css">
+    <link rel="stylesheet" type="text/css" href="../../main.css">
+    
+
+    
+    
+</head>
+<body class="rustdoc">
+    <!--[if lte IE 8]>
+    <div class="warning">
+        This old browser is unsupported and will most likely display funky
+        things.
+    </div>
+    <![endif]-->
+
+    
+
+    <nav class="sidebar">
+        
+        <p class='location'><a href='../index.html'>cucumber</a>::<wbr><a href='index.html'>state</a></p><script>window.sidebarCurrent = {name: 'Cucumber', ty: 'struct', relpath: ''};</script><script defer src="sidebar-items.js"></script>
+    </nav>
+
+    <nav class="sub">
+        <form class="search-form js-only">
+            <div class="search-container">
+                <input class="search-input" name="search"
+                       autocomplete="off"
+                       placeholder="Click or press ‘S’ to search, ‘?’ for more options…"
+                       type="search">
+            </div>
+        </form>
+    </nav>
+
+    <section id='main' class="content struct">
+<h1 class='fqn'><span class='in-band'>Struct <a href='../index.html'>cucumber</a>::<wbr><a href='index.html'>state</a>::<wbr><a class='struct' href=''>Cucumber</a></span><span class='out-of-band'><span id='render-detail'>
+                   <a id="toggle-all-docs" href="javascript:void(0)" title="collapse all docs">
+                       [<span class='inner'>&#x2212;</span>]
+                   </a>
+               </span><a id='src-25' class='srclink' href='../../src/cucumber/src/state.rs.html#62-67' title='goto source code'>[src]</a></span></h1>
+<pre class='rust struct'>pub struct Cucumber&lt;World&gt; {
+    pub tags: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>&gt;,
+    // some fields omitted
+}</pre><div class='docblock'><p>The Cucumber state wrapper</p>
+
+<p>This struct maintains the list of primitive step components, and does the
+lookups to find and
+execute steps. It also maintains the current tags</p>
+
+<p>This struct is typically only used directly when invoking steps from other
+steps, as in the
+example. Otherwise, it is managed by the
+<a href="../runner/struct.WorldRunner.html">WorldRunner</a></p>
+
+<h1 id='example' class='section-header'><a href='#example'>Example</a></h1>
+<pre class='rust rust-example-rendered'>
+<span class='kw'>use</span> <span class='ident'>cucumber</span>::{
+  <span class='ident'>cucumber_regex</span>,
+  <span class='ident'>Cucumber</span>
+};
+
+<span class='kw'>fn</span> <span class='ident'>main</span>() {
+  <span class='kw'>let</span> <span class='kw-2'>mut</span> <span class='ident'>cuke</span>: <span class='ident'>Cucumber</span><span class='op'>&lt;</span><span class='ident'>u32</span><span class='op'>&gt;</span> <span class='op'>=</span> <span class='ident'>Cucumber</span>::<span class='ident'>new</span>();
+  <span class='ident'>cuke</span>.<span class='ident'>insert_step</span>(<span class='string'>&quot;dummy_path&quot;</span>.<span class='ident'>to_owned</span>(),
+<span class='ident'>cucumber_regex</span>::<span class='ident'>build</span>(<span class='string'>&quot;^test$&quot;</span>), <span class='ident'>Box</span>::<span class='ident'>new</span>(<span class='kw'>move</span> <span class='op'>|</span><span class='ident'>c</span>: <span class='kw-2'>&amp;</span><span class='ident'>Cucumber</span><span class='op'>&lt;</span><span class='ident'>u32</span><span class='op'>&gt;</span>,
+<span class='ident'>world</span>:
+    <span class='kw-2'>&amp;</span><span class='kw-2'>mut</span> <span class='ident'>u32</span>, _<span class='op'>|</span> {
+    <span class='comment'>// Undefined step here will return a &quot;no match&quot; error</span>
+    <span class='ident'>c</span>.<span class='ident'>invoke</span>(<span class='string'>&quot;another step&quot;</span>, <span class='ident'>world</span>, <span class='prelude-val'>None</span>)
+  }));
+}</pre>
+</div><h2 class='fields'>Fields</h2>
+<table><tr class='stab '>
+                             <td id='structfield.tags'><code>tags</code></td><td></td></tr></table><h2 id='methods'>Methods</h2><h3 class='impl'><span class='in-band'><code>impl&lt;World&gt; <a class='struct' href='../../cucumber/state/struct.Cucumber.html' title='cucumber::state::Cucumber'>Cucumber</a>&lt;World&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-31' class='srclink' href='../../src/cucumber/src/state.rs.html#69-180' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.new' class='method'><code>fn <a href='#method.new' class='fnname'>new</a>() -&gt; <a class='struct' href='../../cucumber/state/struct.Cucumber.html' title='cucumber::state::Cucumber'>Cucumber</a>&lt;World&gt;</code></h4>
+<h4 id='method.insert_step' class='method'><code>fn <a href='#method.insert_step' class='fnname'>insert_step</a>(&amp;mut self, path: <a class='struct' href='https://doc.rust-lang.org/nightly/collections/string/struct.String.html' title='collections::string::String'>String</a>, regex: <a class='struct' href='../../cucumber/state/struct.Regex.html' title='cucumber::state::Regex'>Regex</a>, step: <a class='type' href='../../cucumber/definitions/registration/type.SimpleStep.html' title='cucumber::definitions::registration::SimpleStep'>SimpleStep</a>&lt;World&gt;)</code></h4>
+<div class='docblock'><p>Add a new step to the set of steps.</p>
+
+<p>This method is typically executed by a
+<a href="../runner/struct.WorldRunner.html">WorldRunner</a> when
+<code>#given</code>, <code>#when</code> or <code>#then</code> methods are called.</p>
+</div><h4 id='method.find_match' class='method'><code>fn <a href='#method.find_match' class='fnname'>find_match</a>(&amp;self, str: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>) -&gt; <a class='struct' href='https://doc.rust-lang.org/nightly/collections/vec/struct.Vec.html' title='collections::vec::Vec'>Vec</a>&lt;<a class='struct' href='../../cucumber/event/response/struct.Step.html' title='cucumber::event::response::Step'>ResponseStep</a>&gt;</code></h4>
+<div class='docblock'><p>Find a step or steps matching a given string.</p>
+
+<p>This method is typically executed by a
+<a href="../runner/struct.WorldRunner.html">WorldRunner</a> when
+trying to find a step corresponding to a string provided by the
+<a href="../server/struct.Server.html">Server</a>.</p>
+</div><h4 id='method.pending' class='method'><code>fn <a href='#method.pending' class='fnname'>pending</a>(&amp;self, message: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
+<div class='docblock'><p>Set a step pending with a useful message</p>
+</div><h4 id='method.fail' class='method'><code>fn <a href='#method.fail' class='fnname'>fail</a>(&amp;self, message: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>)</code></h4>
+<div class='docblock'><p>Fails with a useful message</p>
+</div><h4 id='method.succeed_immediately' class='method'><code>fn <a href='#method.succeed_immediately' class='fnname'>succeed_immediately</a>(&amp;self)</code></h4>
+<div class='docblock'><p>Ends step execution successfully.
+I have no idea why anyone would want to do this, but it fills out the
+&quot;pending, fail,
+success&quot; set.</p>
+</div><h4 id='method.invoke' class='method'><code>fn <a href='#method.invoke' class='fnname'>invoke</a>(&amp;self, str: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, world: &amp;mut World, extra_arg: <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;<a class='enum' href='../../cucumber/event/request/enum.InvokeArgument.html' title='cucumber::event::request::InvokeArgument'>InvokeArgument</a>&gt;)</code></h4>
+<div class='docblock'><p>Directly execute the step matched by a regular expression.</p>
+
+<p>The most typical method applied on a Cucumber instance, this method
+allows steps to invoke
+other steps. The final argument is for use with docstring arguments or
+tables.</p>
+</div><h4 id='method.step' class='method'><code>fn <a href='#method.step' class='fnname'>step</a>(&amp;self, id: <a class='type' href='../../cucumber/state/type.StepId.html' title='cucumber::state::StepId'>StepId</a>) -&gt; <a class='enum' href='https://doc.rust-lang.org/nightly/core/option/enum.Option.html' title='core::option::Option'>Option</a>&lt;&amp;<a class='type' href='../../cucumber/definitions/registration/type.SimpleStep.html' title='cucumber::definitions::registration::SimpleStep'>SimpleStep</a>&lt;World&gt;&gt;</code></h4>
+<div class='docblock'><p>Retrieve a step based on its Id</p>
+
+<p>This method is typically executed by a
+<a href="../runner/struct.WorldRunner.html">WorldRunner</a> when
+a request specifically invokes a step by Id. This is typical of the
+Cucumber Wire protocol.</p>
+</div></div><h2 id='implementations'>Trait Implementations</h2><h3 class='impl'><span class='in-band'><code>impl&lt;World&gt; <a class='trait' href='../../cucumber/definitions/registration/trait.CucumberRegistrar.html' title='cucumber::definitions::registration::CucumberRegistrar'>CucumberRegistrar</a>&lt;World&gt; for <a class='struct' href='../../cucumber/state/struct.Cucumber.html' title='cucumber::state::Cucumber'>Cucumber</a>&lt;World&gt;</code></span><span class='out-of-band'><div class='ghost'></div><a id='src-241' class='srclink' href='../../src/cucumber/src/definitions/registration.rs.html#23-35' title='goto source code'>[src]</a></span></h3>
+<div class='impl-items'><h4 id='method.given' class='method'><code>fn <a href='../../cucumber/definitions/registration/trait.CucumberRegistrar.html#tymethod.given' class='fnname'>given</a>(&amp;mut self, file: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, line: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, regex: <a class='struct' href='../../cucumber/state/struct.Regex.html' title='cucumber::state::Regex'>Regex</a>, step: <a class='type' href='../../cucumber/definitions/registration/type.SimpleStep.html' title='cucumber::definitions::registration::SimpleStep'>SimpleStep</a>&lt;World&gt;)</code></h4>
+<h4 id='method.when' class='method'><code>fn <a href='../../cucumber/definitions/registration/trait.CucumberRegistrar.html#tymethod.when' class='fnname'>when</a>(&amp;mut self, file: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, line: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, regex: <a class='struct' href='../../cucumber/state/struct.Regex.html' title='cucumber::state::Regex'>Regex</a>, step: <a class='type' href='../../cucumber/definitions/registration/type.SimpleStep.html' title='cucumber::definitions::registration::SimpleStep'>SimpleStep</a>&lt;World&gt;)</code></h4>
+<h4 id='method.then' class='method'><code>fn <a href='../../cucumber/definitions/registration/trait.CucumberRegistrar.html#tymethod.then' class='fnname'>then</a>(&amp;mut self, file: &amp;<a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.str.html'>str</a>, line: <a class='primitive' href='https://doc.rust-lang.org/nightly/std/primitive.u32.html'>u32</a>, regex: <a class='struct' href='../../cucumber/state/struct.Regex.html' title='cucumber::state::Regex'>Regex</a>, step: <a class='type' href='../../cucumber/definitions/registration/type.SimpleStep.html' title='cucumber::definitions::registration::SimpleStep'>SimpleStep</a>&lt;World&gt;)</code></h4>
+</div></section>
+    <section id='search' class="content hidden"></section>
+
+    <section class="footer"></section>
+
+    <aside id="help" class="hidden">
+        <div>
+            <h1 class="hidden">Help</h1>
+
+            <div class="shortcuts">
+                <h2>Keyboard Shortcuts</h2>
+
+                <dl>
+                    <dt>?</dt>
+                    <dd>Show this help dialog</dd>
+                    <dt>S</dt>
+                    <dd>Focus the search field</dd>
+                    <dt>&larrb;</dt>
+                    <dd>Move up in search results</dd>
+                    <dt>&rarrb;</dt>
+                    <dd>Move down in search results</dd>
+                    <dt>&#9166;</dt>
+                    <dd>Go to active search result</dd>
+                    <dt>+</dt>
+                    <dd>Collapse/expand all sections</dd>
+                </dl>
+            </div>
+
+            <div class="infos">
+                <h2>Search Tricks</h2>
+
+                <p>
+                    Prefix searches with a type followed by a colon (e.g.
+                    <code>fn:</code>) to restrict the search to a given type.
+                </p>
+
+                <p>
+                    Accepted types are: <code>fn</code>, <code>mod</code>,
+                    <code>struct</code>, <code>enum</code>,
+                    <code>trait</code>, <code>type</code>, <code>macro</code>,
+                    and <code>const</code>.
+                </p>
+
+                <p>
+                    Search functions by type signature (e.g.
+                    <code>vec -> usize</code> or <code>* -> vec</code>)
+                </p>
+            </div>
+        </div>
+    </aside>
+
+    
+
+    <script>
+        window.rootPath = "../../";
+        window.currentCrate = "cucumber";
+        window.playgroundUrl = "";
+    </script>
+    <script src="../../jquery.js"></script>
+    <script src="../../main.js"></script>
+    
+    <script defer src="../../search-index.js"></script>
+</body>
+</html>

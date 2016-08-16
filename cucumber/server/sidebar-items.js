@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Server","The interface between an external Gherkin parser and internal Cucumber state"],["ServerHandle","An \"unplugged\" return value from server start, for compiler reasons"]]});

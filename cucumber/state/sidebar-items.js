@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Captures","Captures represents a group of captured strings for a single match."],["Cucumber","The Cucumber state wrapper"],["Regex","A compiled regular expression for matching Unicode strings."]],"trait":[["SendableStep","The trait steps must implement to be invokable"]],"type":[["Step",""],["StepId",""]]});

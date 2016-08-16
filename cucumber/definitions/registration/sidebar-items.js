@@ -1,0 +1,1 @@
+initSidebarItems({"trait":[["CucumberRegistrar","An interface for registering steps"]],"type":[["SimpleStep","A \"simpler\" api-level step. Panic to fail."]]});

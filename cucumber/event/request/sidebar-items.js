@@ -1,0 +1,1 @@
+initSidebarItems({"enum":[["InvokeArgument","The low level type capturing the possible values a step may provide."],["Request","Types of requests handled by runners"]],"struct":[["BeginScenarioRequest",""],["EndScenarioRequest",""],["InvokeRequest",""],["SnippetTextRequest",""],["StepMatchesRequest",""]]});
