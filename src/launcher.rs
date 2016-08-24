@@ -80,7 +80,13 @@ pub fn start_with_addr<W: Send + 'static>(addr: &'static str,
 
 /// Build a command to execute the Ruby Cucumber Server
 pub fn ruby_command() -> Command {
-  let mut command = Command::new("cucumber");
+  let cucumber_bin = if cfg!(target_os = "windows") {
+    "cucumber.bat"
+  } else {
+    "cucumber"
+  };
+
+  let mut command = Command::new(cucumber_bin);
   command.stdout(Stdio::inherit());
   command.stderr(Stdio::inherit());
   // Skip the name of the executable, but pass the rest
