@@ -43,9 +43,9 @@ use std::env;
 ///
 pub fn start<W: Send + 'static>(world: W, register_fns: &[&Fn(&mut CucumberRegistrar<W>)]) {
   let addr = if cfg!(target_os = "windows") {
-    "127.0.0.1:1234"
+    "127.0.0.1:7879"
   } else {
-    "0.0.0.0:1234"
+    "0.0.0.0:7879"
   };
   start_with_addr(addr, world, register_fns)
 }
