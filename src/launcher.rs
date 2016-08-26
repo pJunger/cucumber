@@ -8,13 +8,20 @@ use std::thread;
 use std::time::Duration;
 use std::env;
 
-/// Starts a Cucumber server and the Ruby client
+#[derive(Default)]
+pub struct CucumberConfig<'a, W: Send + 'static> {
+  world: W,
+  addr: &'static str,
+  registrar_fns: Vec<&'a Fn(&mut CucumberRegistrar<W>)>,
+  args: Vec<&'static str>,
+}
+
+/// Configure the Cucumber server and Ruby client
 ///
 /// # Example
 /// ```no_run
 /// #[macro_use]
 /// extern crate cucumber;
-///
 ///
 /// mod button_steps {
 ///   use cucumber::CucumberRegistrar;
@@ -31,66 +38,109 @@ use std::env;
 /// fn main() {
 ///   let world: u32 = 0;
 ///
-///   cucumber::start(
-///     world,
+///   cucumber::create_config(world)
+///             .with_registrars(
 ///     &[
 ///       &button_steps::register_steps,
 ///       &widget_steps::register_steps,
-///     ]
-///   );
+///     ]).run();
 /// }
 /// ```
 ///
-pub fn start<W: Send + 'static>(world: W, register_fns: &[&Fn(&mut CucumberRegistrar<W>)]) {
+pub fn create_config<'a, W: Send + 'static>(world: W) -> CucumberConfig<'a, W> {
   let addr = if cfg!(target_os = "windows") {
-    "127.0.0.1:7879"
+    "127.0.0.1:7878"
   } else {
-    "0.0.0.0:7879"
+    "0.0.0.0:7878"
   };
-  start_with_addr(addr, world, register_fns)
+  CucumberConfig {
+    world: world,
+    addr: addr,
+    registrar_fns: Vec::new(),
+    args: Vec::new(),
+  }
 }
 
-/// Start a Cucumber server, with an ip and port, see the [`start()
-/// method`][start].
-/// [start]: fn.start.html
-#[allow(unused_variables)]
-pub fn start_with_addr<W: Send + 'static>(addr: &'static str,
-                                          world: W,
-                                          register_fns: &[&Fn(&mut CucumberRegistrar<W>)]) {
-  let mut runner = WorldRunner::new(world);
+impl<'a, W: Send + 'static> CucumberConfig<'a, W> {
+  /// Adds a custom ip and port, that will replace the default of 0.0.0.0:7878
+  pub fn address(mut self, address: &'static str) -> CucumberConfig<'a, W> {
+    self.addr = address;
+    self
+  }
 
-  register_fns.iter().foreach(|fun| fun(&mut runner));
+  /// Adds a slice of registrar functions.
+  pub fn registrar_fns(mut self,
+                       registrars: &'a [&Fn(&mut CucumberRegistrar<W>)])
+                       -> CucumberConfig<'a, W> {
+    self.registrar_fns.extend_from_slice(registrars);
+    self
+  }
 
-  let server = Server::new(runner);
-  // NOTE: Unused stop_rx needs to be held, or it will drop and close the server
-  let (handle, stop_rx) = server.start(Some(addr));
+  /// Adds a single registrar functions
+  pub fn registrar_fn(mut self,
+                      registrar: &'a Fn(&mut CucumberRegistrar<W>))
+                      -> CucumberConfig<'a, W> {
+    self.registrar_fns.push(registrar);
+    self
+  }
 
-  let status = ruby_command()
-    .spawn()
-    .unwrap_or_else(|e| panic!("failed to execute process: {}", e))
-    .wait()
-    .unwrap();
+  /// Adds a slice of arguments that is passed to the ruby client
+  pub fn args(mut self, args: &'a [&'static str]) -> CucumberConfig<'a, W> {
+    self.args.extend_from_slice(args);
+    self
+  }
 
-  // NOTE: Join disabled because of edge case when having zero tests
-  //   In that case, ruby cuke will not make tcp connection. It is
-  //   so far impossible to break from tcp::accept, so we must kill
-  // TODO: Investigate MIO to resolve this
-  // handle.join().unwrap();
-  // NOTE: Sleep is an interim solution, to allow the thread time to clean up in
-  // the typical case
-  thread::sleep(Duration::new(2, 0));
+  /// Adds a single argument that is passed to the ruby client
+  pub fn arg(mut self, arg: &'static str) -> CucumberConfig<'a, W> {
+    self.args.push(arg);
+    self
+  }
 
-  process::exit(status.code().unwrap());
+  /// Starts Cucumber and the ruby client using the defined settings.
+  #[allow(unused_variables)]
+  pub fn start(self) {
+    let mut runner = WorldRunner::new(self.world);
+
+    self.registrar_fns.iter().foreach(|fun| fun(&mut runner));
+
+    let server = Server::new(runner);
+    // NOTE: Unused stop_rx needs to be held, or it will drop and close the server
+    let (handle, stop_rx) = server.start(Some(self.addr));
+
+    let status = ruby_command(self.args)
+      .spawn()
+      .unwrap_or_else(|e| panic!("failed to execute process: {}", e))
+      .wait()
+      .unwrap();
+
+    // NOTE: Join disabled because of edge case when having zero tests
+    //   In that case, ruby cuke will not make tcp connection. It is
+    //   so far impossible to break from tcp::accept, so we must kill
+    // TODO: Investigate MIO to resolve this
+    // handle.join().unwrap();
+    // NOTE: Sleep is an interim solution, to allow the thread time to clean up in
+    // the typical case
+    thread::sleep(Duration::new(2, 0));
+
+    process::exit(status.code().unwrap());
+  }
 }
 
 /// Build a command to execute the Ruby Cucumber Server
-pub fn ruby_command() -> Command {
-  let mut command = Command::new("cucumber");
+pub fn ruby_command(args: Vec<&'static str>) -> Command {
+  let cucumber_bin = if cfg!(target_os = "windows") {
+    "cucumber.bat"
+  } else {
+    "cucumber"
+  };
+
+  let mut command = Command::new(cucumber_bin);
   command.stdout(Stdio::inherit());
   command.stderr(Stdio::inherit());
   // Skip the name of the executable, but pass the rest
   env::args().skip(1).foreach(|a| {
     command.arg(a);
   });
+  command.args(args.as_slice());
   command
 }
