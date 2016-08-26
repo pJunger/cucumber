@@ -39,11 +39,11 @@ pub struct CucumberConfig<'a, W: Send + 'static> {
 ///   let world: u32 = 0;
 ///
 ///   cucumber::create_config(world)
-///             .with_registrars(
-///     &[
-///       &button_steps::register_steps,
-///       &widget_steps::register_steps,
-///     ]).run();
+///             .address("0.0.0.0:12345")
+///             .registrar_fn(&button_steps::register_steps)
+///             .registrar_fn(&widget_steps::register_steps)
+///             .args(&["--format", "pretty", "--expand"])
+///             .start();
 /// }
 /// ```
 ///
