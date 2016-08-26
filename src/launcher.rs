@@ -48,14 +48,9 @@ pub struct CucumberConfig<'a, W: Send + 'static> {
 /// ```
 ///
 pub fn create_config<'a, W: Send + 'static>(world: W) -> CucumberConfig<'a, W> {
-  let addr = if cfg!(target_os = "windows") {
-    "127.0.0.1:7878"
-  } else {
-    "0.0.0.0:7878"
-  };
   CucumberConfig {
     world: world,
-    addr: addr,
+    addr: "127.0.0.1:7878",
     registrar_fns: Vec::new(),
     args: Vec::new(),
   }
