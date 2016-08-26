@@ -162,8 +162,13 @@ mod test {
   #[test]
   fn it_makes_a_server() {
     let server = Server::new(|_| Response::BeginScenario);
-    let (handle, stop_tx) = server.start(Some("0.0.0.0:1234"));
-    let _ = TcpStream::connect("0.0.0.0:1234").unwrap();
+    let addr = if cfg!(target_os = "windows") {
+      "127.0.0.1:1234"
+    } else {
+      "0.0.0.0:1234"
+    };
+    let (handle, stop_tx) = server.start(Some(addr));
+    let _ = TcpStream::connect(addr).unwrap();
 
     stop_tx.send(()).unwrap();
     handle.join().unwrap();
@@ -180,8 +185,13 @@ mod test {
         Request::SnippetText(_) => Response::SnippetText("Snippet".to_owned()),
       }
     });
-    let (handle, stop_tx) = server.start(Some("0.0.0.0:1235"));
-    let mut stream = TcpStream::connect("0.0.0.0:1235").unwrap();
+    let addr = if cfg!(target_os = "windows") {
+      "127.0.0.1:1235"
+    } else {
+      "0.0.0.0:1235"
+    };
+    let (handle, stop_tx) = server.start(Some(addr));
+    let mut stream = TcpStream::connect(addr).unwrap();
 
     {
       stream.write(b"[\"begin_scenario\"]\n").unwrap();
