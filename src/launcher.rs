@@ -47,6 +47,15 @@ pub struct CucumberConfig<'a, W: Send + 'static> {
 /// }
 /// ```
 ///
+pub fn create_config<'a, W: Send + 'static>(world: W) -> CucumberConfig<'a, W> {
+  CucumberConfig {
+    world: world,
+    addr: "127.0.0.1:7878",
+    registrar_fns: Vec::new(),
+    args: Vec::new(),
+  }
+}
+
 impl<'a, W: Send + 'static> CucumberConfig<'a, W> {
   /// Adds a custom ip and port, that will replace the default of 0.0.0.0:7878
   pub fn address(mut self, address: &'static str) -> CucumberConfig<'a, W> {
