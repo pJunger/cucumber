@@ -57,7 +57,7 @@ pub fn create_config<'a, W: Send + 'static>(world: W) -> CucumberConfig<'a, W> {
 }
 
 impl<'a, W: Send + 'static> CucumberConfig<'a, W> {
-  /// Adds a custom ip and port, that will replace the default of 0.0.0.0:7878
+  /// Adds a custom ip and port, that will replace the default of localhost:7878
   pub fn address(mut self, address: &'static str) -> CucumberConfig<'a, W> {
     self.addr = address;
     self
@@ -104,7 +104,7 @@ impl<'a, W: Send + 'static> CucumberConfig<'a, W> {
 
     let status = ruby_command(self.args)
       .spawn()
-      .unwrap_or_else(|e| panic!("failed to execute process: {}", e))
+      .unwrap_or_else(|e| panic!("failed to execute process: {}. Is Cucumber on path?", e))
       .wait()
       .unwrap();
 

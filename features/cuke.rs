@@ -12,7 +12,7 @@ use support::env::CucumberWorld;
 use step_definitions::project_steps;
 
 fn cuke() {
-  cucumber::start(CucumberWorld::new(), &[&project_steps::register_steps]);
+  cucumber::create_config(CucumberWorld::new()).registrar_fn(&project_steps::register_steps).start();
 }
 
 fn main() {

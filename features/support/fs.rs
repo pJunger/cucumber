@@ -146,7 +146,7 @@ fn create_features(dir: TempDir) -> io::Result<TempDir> {
 
         fn main() {
           let world: u32 = 0;
-          cucumber::start_with_addr(\"0.0.0.0:7879\", world, &[&steps::register_steps]);
+          cucumber::create_config(world).address(\"127.0.0.1:7879\").registrar_fn(&steps::register_steps);
         }
       ")
     })
@@ -154,7 +154,7 @@ fn create_features(dir: TempDir) -> io::Result<TempDir> {
     .and_then(|_| File::create(dir.path().join("features/step_definitions/cucumber_rust.wire")))
     .and_then(|mut file| {
       file.write(b"
-        host: 0.0.0.0
+        host: 127.0.0.1
         port: 7879
       ")
     })
