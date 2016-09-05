@@ -6,19 +6,13 @@ extern crate cucumber;
 mod step_definitions;
 mod support;
 
+use step_definitions::{calculator_steps, display_steps};
 use support::env::CalculatorWorld;
-use step_definitions::{
-  calculator_steps,
-  display_steps
-};
 
 #[test]
 fn main() {
-  cucumber::start(
-    CalculatorWorld::new(),
-    &[
-      &calculator_steps::register_steps,
-      &display_steps::register_steps,
-    ]
-  );
+  cucumber::create_config(CalculatorWorld::new())
+    .registrar_fn(&calculator_steps::register_steps)
+    .registrar_fn(&display_steps::register_steps)
+    .start();
 }
