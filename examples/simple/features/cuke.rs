@@ -6,5 +6,5 @@ extern crate cucumber;
 #[test]
 fn main() {
   let world: u32 = 0;
-  cucumber::start(world, &[]);
+  cucumber::create_config(world).start();
 }
