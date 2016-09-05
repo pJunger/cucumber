@@ -16,7 +16,9 @@ pub struct CucumberConfig<'a, W: Send + 'static> {
   args: Vec<&'static str>,
 }
 
-/// Configure the Cucumber server and Ruby client
+/// Build a command to execute the Ruby Cucumber Server.
+/// Takes a list of extra command line arguments to the server
+/// NOTE: This command also passes the command line arguments passed to this executable.
 ///
 /// # Example
 /// ```no_run
