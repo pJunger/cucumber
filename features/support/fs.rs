@@ -146,7 +146,10 @@ fn create_features(dir: TempDir) -> io::Result<TempDir> {
 
         fn main() {
           let world: u32 = 0;
-          cucumber::create_config(world).address(\"127.0.0.1:7879\").registrar_fn(&steps::register_steps);
+          cucumber::create_config(world)
+            .address(\"127.0.0.1:7879\")
+            .registrar_fn(&steps::register_steps)
+            .start();
         }
       ")
     })
