@@ -9,6 +9,7 @@ use std::time::Duration;
 use std::env;
 
 #[derive(Default)]
+#[must_use = "CucumberConfig has to be consumed by start method!"]
 pub struct CucumberConfig<'a, W: Send + 'static> {
   world: W,
   addr: &'static str,
