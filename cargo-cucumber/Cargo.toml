@@ -1,0 +1,10 @@
+[package]
+name = "cargo-cucumber"
+version = "0.1.0"
+authors = ["Patrick Junger <mail@pjunger.com>"]
+
+[dependencies]
+clap = "2.11.3"
+rustyline = "1.0.0"
+log = "0.3.6"
+env_logger = "0.3.4"
