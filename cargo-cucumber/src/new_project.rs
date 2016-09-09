@@ -21,12 +21,6 @@ pub fn new(overwrite: bool) -> Result<()> {
 
   let cuke = get_cucumber_world(&mut rl);
   println!("Please enter the name of the Cucumber world that is to be created");
-  //  while let Ok(line) = rl.readline(">> ") {
-  //    match Some(line) {
-  //      Some(_) => do_something();
-  //
-  //    }
-  //  }
   Ok(())
 }
 
