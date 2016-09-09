@@ -20,4 +20,10 @@ error_chain! {
             display("A Cucumber project seems to exist already!")
         }
     }
+    errors {
+        UserAbort {
+            description("user aborted")
+            display("Quitting.")
+        }
+    }
 }

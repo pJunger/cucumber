@@ -29,13 +29,13 @@ pub mod cucumber_regex;
 
 mod launcher;
 
+pub use definitions::registration::CucumberRegistrar;
+pub use event::request::InvokeArgument;
 pub use launcher::{ruby_command, create_config};
 
 pub use runner::{CommandRunner, WorldRunner};
-pub use definitions::registration::CucumberRegistrar;
-pub use state::{Cucumber, SendableStep};
 pub use server::Server;
-pub use event::request::InvokeArgument;
+pub use state::{Cucumber, SendableStep};
 
 /// Destructure a vector of
 /// [InvokeArgument](event/request/enum.InvokeArgument.html) into a tuple of

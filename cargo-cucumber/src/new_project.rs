@@ -19,21 +19,42 @@ pub fn new(overwrite: bool) -> Result<()> {
   try!(check_if_cargo_project().and(check_for_preexisting_projects(overwrite)));
   let mut rl = rustyline::Editor::<()>::new();
 
-  get_cucumber_world(rl);
+  let cuke = get_cucumber_world(&mut rl);
   println!("Please enter the name of the Cucumber world that is to be created");
-//  while let Ok(line) = rl.readline(">> ") {
-//    match Some(line) {
-//      Some(_) => do_something();
-//
-//    }
-//  }
+  //  while let Ok(line) = rl.readline(">> ") {
+  //    match Some(line) {
+  //      Some(_) => do_something();
+  //
+  //    }
+  //  }
   Ok(())
 }
 
-fn get_cucumber_world(rl: rustyline::Editor<()>) -> Result<()>{
+fn get_cucumber_world(rl: &mut rustyline::Editor<()>) -> Result<String> {
   println!("Please enter the name of the Cucumber world that is to be created");
-//  if let Ok(line) = rrl
-Ok(())
+
+  fn check_identifier(l: &str) -> Result<String> {
+    Err("Add real logic to check_identifier!".into()) // TODO: Real logic
+  }
+
+  fn get_default_identifier() -> Result<String> {
+    Ok("CucumberConfig".to_string())
+  }
+
+  if let Ok(line) = rl.readline(">>") {
+    match line.as_ref() {
+      ":help" => {
+        println!("The Cucumber world is a struct which can hold information needed for the test \
+                  execution.");
+        get_cucumber_world(rl)
+      },
+      ":default" => get_default_identifier(),
+      ":quit" => Err(ErrorKind::UserAbort.into()),
+      ident => check_identifier(ident),
+    }
+  } else {
+    Err("something".into())
+  }
 }
 
 fn delete_preexisting_projects(p: &path::Path) -> Result<()> {
