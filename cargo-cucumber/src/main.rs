@@ -1,5 +1,9 @@
-mod new_project;
+#![recursion_limit = "1024"]
 
+mod new_project;
+mod errors;
+
+#[macro_use] extern crate error_chain;
 extern crate rustyline;
 #[macro_use] extern crate clap;
 #[macro_use] extern crate log;
@@ -15,7 +19,7 @@ fn main() {
         .version(crate_version!())
         .author(crate_authors!())
         .about("Cucumber(.rs) utility")
-        .bin_name("cargo-cucumber")
+        .bin_name("cargo cucumber")
         .subcommand(SubCommand::with_name("new")
             .about("Creates a new Cucumber project")
             .version(crate_version!())
@@ -31,9 +35,9 @@ fn main() {
     if let Some(matches) = matches.subcommand_matches("new") {
         let overwrite = matches.is_present("overwrite");
         if matches.is_present("default") {
-            new_project::new_default(overwrite);
+            new_project::new_default(overwrite).unwrap();
         } else {
-            new_project::new(overwrite);
+            new_project::new(overwrite).unwrap();
         }
     } else {
         error!("Cucumber App is currently only usable with its subcommands! Type --help to see its proper usage.");
