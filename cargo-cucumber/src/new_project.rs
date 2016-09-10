@@ -104,6 +104,7 @@ fn get_features_dir_name() -> &'static str {
   "features_test"
 }
 
+
 struct WorldConfig {
   name: String,
   address: String,
@@ -113,13 +114,38 @@ struct WorldConfig {
 }
 
 impl WorldConfig {
-  fn new(name: String) -> WorldConfig {
+  fn new() -> WorldConfig {
     WorldConfig {
-      name: name,
+      name: WorldConfig::default_name(),
       address: "127.0.0.1".to_string(),
       port: 7878,
       registrar_fns: Vec::new(),
       arguments: Vec::new(),
     }
+  }
+
+  fn default() -> WorldConfig {
+    WorldConfig {
+      name: WorldConfig::default_name(),
+      address: WorldConfig::default_address(),
+      port: WorldConfig::default_port(),
+      registrar_fns: vec![WorldConfig::default_registrar_fn()],
+      arguments: Vec::new(),
+    }
+  }
+
+  fn default_name() -> String {
+    "CucumberConfig".to_string()
+  }
+
+  fn default_address() -> String {
+    "127.0.0.1".to_string()
+  }
+
+  fn default_port() -> usize {
+    7878
+  }
+  fn default_registrar_fn() -> String {
+    "CucumberSteps".to_string()
   }
 }
