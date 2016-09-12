@@ -18,7 +18,7 @@ nightly = ["serde_macros"]
 
 [dev-dependencies]
 tempdir = "0.3.4"
-
+walkdir = "0.1.6"
 
 [dependencies]
 regex = "0.1.60"
