@@ -167,26 +167,10 @@ fn create_features(dir: TempDir) -> io::Result<TempDir> {
 }
 
 fn bootstrap_target(dir: TempDir) -> io::Result<TempDir> {
-  // TODO: consider a solution using standard Rust
-  
   copy_recursively(&env::current_dir().unwrap().join("target"), &dir.path().join("target")).map(|_| dir)
-  // Command::new("cp")
-  //   .arg(env::current_dir().unwrap().join("target"))
-  //   .arg(dir.path().join("target"))
-  //   .arg("-r")
-  //   .output()
-  //   .map(|_| dir)
 }
 
 fn copy_recursively(origin_base: &Path, target_base: &Path) -> io::Result<u64> {
-  // let mut cnt = 0;
-  // for entry in WalkDir::new(origin_base).into_iter().filter_map(|e| e.ok()).filter(|e| e.path().is_file()) {
-  //   let relative = (entry.path().strip_prefix(origin_base));
-  //   let target = relative.map(|r| target_base.join(r));
-  //   try!(copy(entry.path(), target));
-  //   cnt += 1;
-  // }
-  // Ok(cnt)
   WalkDir::new(origin_base).into_iter().filter_map(|e| e.ok()).fold(Ok(0), |sum, entry| {
     if entry.path().is_file() {
       let relative = entry.path().strip_prefix(origin_base).unwrap();
