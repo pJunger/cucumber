@@ -1,6 +1,6 @@
 use tempdir::TempDir;
 use std::io::{self, Write};
-use std::fs::{copy, create_dir_all, DirBuilder, File};
+use std::fs::{self, DirBuilder, File};
 use std::env;
 use std::path::Path;
 use std::process::Command;
@@ -175,13 +175,10 @@ fn copy_recursively(origin_base: &Path, target_base: &Path) -> io::Result<u64> {
     if entry.path().is_file() {
       let relative = entry.path().strip_prefix(origin_base).unwrap();
       let target = target_base.join(relative);
-      // println!("orig: {}, target: {}", entry.path().to_str().unwrap(), target.to_str().unwrap());
-      // println!("orig: {}, target: {}", entry.path().is_file(), target.is_file());
-      // println!("Copying file!");
-      copy(&entry.path(), &target).map(|_| sum.unwrap() + 1)
+      let _ = fs::create_dir_all(target.parent().unwrap());
+      fs::copy(&entry.path(), &target).map(|_| sum.unwrap() + 1)
     } else {
-        // println!("Creating directory");
-        create_dir_all(entry.path()).and_then(|_| sum)
+        fs::create_dir_all(entry.path()).and_then(|_| sum)
     }
   })
 }
