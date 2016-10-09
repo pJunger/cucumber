@@ -26,4 +26,18 @@ error_chain! {
             display("Quitting.")
         }
     }
+
+    errors {
+        NoValidInput {
+            description("invalid input")
+            display("This input is not valid!")
+        }
+    }
+
+    errors {
+        NoValidIdentifier {
+            description("invalid identifier")
+            display("Please choose a valid identifier!")
+        }
+    }
 }
